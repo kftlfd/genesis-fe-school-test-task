@@ -40,6 +40,5 @@ export const queryKeys = {
 
 export const lsKeys = {
   authToken: "authToken",
-  coursesPage: "coursesPage",
   videoProgress: (videoId: string) => `videoProgress:${videoId}`,
 };

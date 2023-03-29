@@ -1,7 +1,7 @@
 import React from "react";
+import { useSearchParams } from "react-router-dom";
 import { Container, Pagination, styled } from "@mui/material";
 
-import { lsKeys } from "../../../consts";
 import { ApiError } from "../../components/api-error";
 import { LoadingSpinner } from "../../components/loading";
 import { config } from "../conf";
@@ -13,17 +13,19 @@ const { COURSES_ON_PAGE } = config;
 export const CoursesList: React.FC = () => {
   const { data: courses, error, isFetching } = useCoursesListQuery();
 
+  const [searchParams, setSearchParams] = useSearchParams();
+
   const coursesRef = React.useRef<HTMLDivElement | null>(null);
 
   const [page, setPage] = React.useState(() => {
-    const pageInLS = Number(window.localStorage.getItem(lsKeys.coursesPage));
-    return !isNaN(pageInLS) && pageInLS > 0 ? pageInLS : 1;
+    const inURL = Number(searchParams.get("page"));
+    return !isNaN(inURL) && inURL > 0 ? inURL : 1;
   });
 
   const goToPage = (newPage: number) => {
     setPage(newPage);
     coursesRef.current?.scrollIntoView({ behavior: "smooth" });
-    window.localStorage.setItem(lsKeys.coursesPage, `${newPage}`);
+    setSearchParams({ page: `${newPage}` });
   };
 
   const coursesPage = React.useMemo(() => {
