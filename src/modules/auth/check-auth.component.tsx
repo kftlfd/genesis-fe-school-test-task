@@ -13,9 +13,10 @@ type Props = {
 export const CheckAuth: React.FC<Props> = ({ children }) => {
   const { data: token, error, isFetching } = useAuthQuery();
 
-  React.useEffect(() => {
-    if (!token) return;
-    window.localStorage.setItem(lsKeys.authToken, token);
+  React.useLayoutEffect(() => {
+    if (token) {
+      window.localStorage.setItem(lsKeys.authToken, token);
+    }
   }, [token]);
 
   const errorMsg =
